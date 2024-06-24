@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { Agent } from "./pages/agent/Agent";
+import { UserDashboard } from "./pages/message-passing/UserDashboard";
+import { AgentDashboard } from "./pages/message-passing/AgentDashboard";
+import { Booking } from "./pages/booking/Booking";
+import { Error } from "./pages/Error";
+import { ManageRooms } from "./pages/manage-rooms/ManageRooms";
+import { AddRoom } from "./pages/manage-rooms/AddRoom";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Routes>
+          <Route path='/' exact Component={Home}></Route>
+          <Route path='/agent' Component={Agent}></Route>
+          <Route path='/message-passing/user-dashboard' Component={UserDashboard}></Route>
+          <Route path='/message-passing/agent-dashboard' Component={AgentDashboard}></Route>
+          <Route path='/booking' Component={Booking}></Route>
+          <Route path='/manage-rooms' Component={ManageRooms}></Route>
+          <Route path='/manage-rooms/add' Component={AddRoom}></Route>
+          <Route path="*" Component={Error}></Route>
+        </Routes>
+      </Router>
     </div>
   );
 }
