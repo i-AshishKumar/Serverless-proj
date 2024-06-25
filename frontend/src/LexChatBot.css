@@ -1,0 +1,25 @@
+.chat-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow-y: auto;
+    height: 400px;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.user {
+    text-align: right;
+    background-color: #daf1da;
+}
+
+.bot {
+    text-align: left;
+    background-color: #f1f1f1;
+}
