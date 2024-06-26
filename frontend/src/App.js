@@ -7,14 +7,26 @@ import { Booking } from "./pages/booking/Booking";
 import { Error } from "./pages/Error";
 import { ManageRooms } from "./pages/manage-rooms/ManageRooms";
 import { AddRoom } from "./pages/manage-rooms/AddRoom";
+<<<<<<< HEAD
 import LexChatBot from "./pages/lex-bots/LexChatBot";
+=======
+import LexChatBot from './pages/lex-bots/LexChatBot'
+import Signup from "./pages/authentication/Signup";
+import Login from "./pages/authentication/Login";
+import {Account} from './pages/authentication/Account'
+import Status from "./pages/authentication/Status";
+>>>>>>> db85273eb2b6e4193aee3bd7425a4d7fb5b7916f
 
 function App() {
   return (
     <div className="App">
+      <Account>
+      <Status />
       <Router>
         <Routes>
           <Route path='/' exact Component={Home}></Route>
+          <Route path='/sign-up' exact Component={Signup}></Route>
+          <Route path='/login' exact Component={Login}></Route>
           <Route path='/agent' Component={Agent}></Route>
           <Route path='/message-passing/user-dashboard' Component={UserDashboard}></Route>
           <Route path='/message-passing/agent-dashboard' Component={AgentDashboard}></Route>
@@ -26,6 +38,7 @@ function App() {
 
         </Routes>
       </Router>
+      </Account>
     </div>
   );
 }
