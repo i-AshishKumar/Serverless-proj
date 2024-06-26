@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
-import './LexChatBot.css'; // Assuming you have a CSS file for styling
+import './LexChatBot.css';
+import { Button, Input } from '@chakra-ui/react'
+import { ArrowUpIcon, ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 
 const LexChatBot = () => {
     const lexRuntime = new AWS.LexRuntimeV2({
@@ -13,6 +15,7 @@ const LexChatBot = () => {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [sessionId, setSessionId] = useState('');
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     useEffect(() => {
         // Generate sessionId once when component mounts
@@ -26,12 +29,13 @@ const LexChatBot = () => {
         setMessages(prevMessages => [...prevMessages, { type: 'user', content: userInput }]);
 
         const params = {
-            botAliasId: '1JXWJMIBAR', // Replace with your bot alias ID
-            botId: '2XT7ZOJLAW', // Replace with your bot ID
+            botAliasId: 'YOUR_BOT_ALIAS_ID', // Replace with your bot alias ID
+            botId: 'YOUR_BOT_ID', // Replace with your bot ID
             localeId: 'en_US', // Replace with your bot's locale
             sessionId: sessionId,
             text: userInput
         };
+        setUserInput(''); // Clear the input field
 
         try {
             const data = await lexRuntime.recognizeText(params).promise();
@@ -48,25 +52,42 @@ const LexChatBot = () => {
             console.error('Error communicating with Lex:', err);
         }
 
-        setUserInput(''); // Clear the input field
+    };
+
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSendMessage();
+        }
     };
 
     return (
-        <div>
-            <div className="chat-container">
-                {messages.map((message, index) => (
-                    <div key={index} className={`message ${message.type}`}>
-                        <strong>{message.type === 'user' ? 'User: ' : 'Bot: '}</strong>
-                        <span>{message.content}</span>
+        <div className="chat-wrapper">
+            <Button className={`chat-header ${isCollapsed ? 'collapsed' : ''}`} onClick={() => setIsCollapsed(!isCollapsed)}>
+                {isCollapsed ? <ChevronUpIcon/> : <ChevronDownIcon/>}
+            </Button>
+            <span >Virtual Assitant</span>
+            {!isCollapsed && (
+                <div className="chat-container">
+                    {messages.map((message, index) => (
+                        <div key={index} className={`message ${message.type}`}>
+                            <strong>{message.type === 'user' ? 'User: ' : 'Bot: '}</strong>
+                            <span>{message.content}</span>
+                        </div>
+                    ))}
+                    <div className='input-container'>
+                        <Input  
+                            type="text" 
+                            placeholder='Type your Message Here' 
+                            size='md'
+                            value={userInput} 
+                            onKeyDown={handleKeyPress}
+                            onChange={(e) => setUserInput(e.target.value)} 
+                        />
+                        <Button onClick={handleSendMessage}><ArrowUpIcon/></Button>
                     </div>
-                ))}
-            </div>
-            <input 
-                type="text" 
-                value={userInput} 
-                onChange={(e) => setUserInput(e.target.value)} 
-            />
-            <button onClick={handleSendMessage}>Send</button>
+                </div>
+            )}
         </div>
     );
 };

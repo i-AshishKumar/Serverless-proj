@@ -1,11 +1,23 @@
 .chat-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-height: 400px;
     overflow-y: auto;
-    height: 400px;
+}
+.chat-wrapper {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    z-index: 1000;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header {
+    margin-right: 10px; /* Adjust margin between button and span */
 }
 
 .message {
@@ -22,4 +34,34 @@
 .bot {
     text-align: left;
     background-color: #f1f1f1;
+}
+
+
+.input-container {
+    background-color: white;
+    display: flex;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 10px;
+    bottom: 10px; /* Adjust as needed */
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border: none;
+    outline: none;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    outline: none;
 }
