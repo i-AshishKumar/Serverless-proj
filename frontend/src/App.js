@@ -7,7 +7,7 @@ import { Booking } from "./pages/booking/Booking";
 import { Error } from "./pages/Error";
 import { ManageRooms } from "./pages/manage-rooms/ManageRooms";
 import { AddRoom } from "./pages/manage-rooms/AddRoom";
-import LexChatBot from './pages/lex-bots/LexChatBot'
+import LexChatBot from "./pages/lex-bots/LexChatBot";
 
 function App() {
   return (
