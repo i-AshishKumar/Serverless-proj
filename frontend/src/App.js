@@ -7,15 +7,13 @@ import { Booking } from "./pages/booking/Booking";
 import { Error } from "./pages/Error";
 import { ManageRooms } from "./pages/manage-rooms/ManageRooms";
 import { AddRoom } from "./pages/manage-rooms/AddRoom";
-<<<<<<< HEAD
-import LexChatBot from "./pages/lex-bots/LexChatBot";
-=======
 import LexChatBot from './pages/lex-bots/LexChatBot'
 import Signup from "./pages/authentication/Signup";
 import Login from "./pages/authentication/Login";
 import {Account} from './pages/authentication/Account'
 import Status from "./pages/authentication/Status";
->>>>>>> db85273eb2b6e4193aee3bd7425a4d7fb5b7916f
+import RoomList from "./pages/list-rooms/ListRooms";
+import EditRoom from "./pages/manage-rooms/EditRoom";
 
 function App() {
   return (
@@ -32,8 +30,10 @@ function App() {
           <Route path='/message-passing/agent-dashboard' Component={AgentDashboard}></Route>
           <Route path='/booking' Component={Booking}></Route>
           <Route path="/bot" Component={LexChatBot}></Route>
+          <Route path="/list-rooms" Component={RoomList}></Route>
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
+          <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
           <Route path="*" Component={Error}></Route>
 
         </Routes>
