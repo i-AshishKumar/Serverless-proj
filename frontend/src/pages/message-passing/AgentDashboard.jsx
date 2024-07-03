@@ -4,15 +4,16 @@ import React, { useEffect, useState } from "react";
 export const AgentDashboard = () => {
     const [concerns, setConcerns] = useState([]);
 
+    const fetchConcerns = async () => {
+        try {
+            const response = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_published_concern');
+            setConcerns(response.data.concerns);
+        } catch (error) {
+            console.error('Error fetching concerns:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchConcerns = async () => {
-            try {
-                const response = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_published_concern');
-                setConcerns(response.data.concerns);
-            } catch (error) {
-                console.error('Error fetching concerns:', error);
-            }
-        };
         fetchConcerns();
     }, []);
 
@@ -24,8 +25,7 @@ export const AgentDashboard = () => {
             });
             alert('Response submitted successfully');
             // Refresh concerns
-            const response = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_published_concern');
-            setConcerns(response.data.concerns);
+            fetchConcerns();
         } catch (error) {
             console.error('Error submitting response:', error);
             alert('Failed to submit response');
@@ -34,7 +34,15 @@ export const AgentDashboard = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-6 text-center">Agent Dashboard</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Customer Query Dashboard</h2>
+            <div className="mb-4 text-center">
+                <button 
+                    onClick={fetchConcerns} 
+                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                >
+                    Refresh Queries
+                </button>
+            </div>
             {concerns.length > 0 ? (
                 <div className="space-y-6">
                     {concerns.map((concern) => (
@@ -61,4 +69,4 @@ export const AgentDashboard = () => {
             )}
         </div>
     );
-}
+};
