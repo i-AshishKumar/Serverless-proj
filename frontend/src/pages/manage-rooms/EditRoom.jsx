@@ -1,14 +1,16 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export const AddRoom = () => {
+const EditRoom = () => {
+  const { state } = useLocation();
+  const roomId  = state.room.id;
   const navigate = useNavigate();
-  const [room, setRoom] = useState({
-    roomNumber: "",
-    price: "",
+  const [room, setRoom] = useState(state?.room || {
+    roomNumber: '',
+    price: '',
     rating: 0,
-    location: "",
+    location: '',
     beds: 0,
     guests: 0,
     baths: 0,
@@ -22,27 +24,33 @@ export const AddRoom = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    setRoom((prevRoom) => ({
-      ...prevRoom,
-      image: e.target.files[0],
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await axios.post('https://w18ghvf5ge.execute-api.us-east-1.amazonaws.com/test/add-room', room);
-      console.log('Room added successfully:', response.data);
-      navigate("/manage-rooms");
+      const response = await axios.post(
+        `https://w18ghvf5ge.execute-api.us-east-1.amazonaws.com/test/edit-room?roomId=${roomId}`, 
+        room, 
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      if (response.status === 200) {
+        navigate("/manage-rooms");
+      } else {
+        console.error('Unexpected response status:', response.status);
+      }
     } catch (error) {
-      console.error('Error adding room:', error);
+      console.error('Error updating room:', error);
     }
   };
 
   return (
     <div className="container mx-auto my-4 px-4">
-      <h1 className="text-3xl font-bold mb-6">Add Room</h1>
+      <h1 className="text-3xl font-bold mb-6">Edit Room</h1>
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -142,10 +150,12 @@ export const AddRoom = () => {
             type="submit"
             className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            Add Room
+            Save Changes
           </button>
         </div>
       </form>
     </div>
   );
 };
+
+export default EditRoom;
