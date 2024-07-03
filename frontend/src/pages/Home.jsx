@@ -1,5 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export const Home = () => {
-    return <div>Home Page</div>;
-};
+function Home() {
+    return(
+        <div className="home-div">
+            <h2>Are you a new user? Click <Link to="/login">Here</Link> to log-in.</h2>
+        </div>
+    );
+}
+
+export default Home;

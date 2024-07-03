@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Home } from "./pages/Home";
+import Home from "./pages/Home";
 import { Agent } from "./pages/agent/Agent";
 import { UserDashboard } from "./pages/message-passing/UserDashboard";
 import { AgentDashboard } from "./pages/message-passing/AgentDashboard";
