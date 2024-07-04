@@ -31,8 +31,8 @@ function App() {
           />
           <Route path='/verification' Component={Verification}></Route>
           <Route path='/agent' Component={Agent}></Route>
-          <Route path='/message-passing/user-dashboard' Component={UserDashboard}></Route>
-          <Route path='/message-passing/agent-dashboard' Component={AgentDashboard}></Route>
+          <Route path='/customer/submit-query' Component={UserDashboard}></Route>
+          <Route path='/agent/answer-query' Component={AgentDashboard}></Route>
           <Route path='/booking' Component={Booking}></Route>
           <Route path="/bot" Component={LexChatBot}></Route>
           <Route path='/manage-rooms' Component={ManageRooms}></Route>

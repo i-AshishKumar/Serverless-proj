@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export const Agent = () => {
     const navigate = useNavigate();
     const redirectToAgentDashboard = () => {
-        navigate('/message-passing/agent-dashboard');
+        navigate('/agent/answer-query');
     };
 
     const redirectToManageRooms = () => {
@@ -18,7 +18,7 @@ export const Agent = () => {
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
                     onClick={redirectToAgentDashboard}
                 >
-                    Go to Agent Dashboard
+                    Answer Customer Queries
                 </button>
                 <button
                     className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
