@@ -69,7 +69,6 @@ const Verification = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(captcha, captchaInput);
         if (securityAnswer !== attributes.securityAnswer) {
             setError('Incorrect answer');
             console.log('Incorrect answer');
