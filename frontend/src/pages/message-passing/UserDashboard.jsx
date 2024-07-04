@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export const UserDashboard = () => {
-    const userId = '123';
+    const user = localStorage.getItem("email");
     const [bookingReference, setBookingReference] = useState('');
     const [concern, setConcern] = useState('');
     const [responses, setResponses] = useState(null);
@@ -12,7 +12,7 @@ export const UserDashboard = () => {
         e.preventDefault();
         try {
             await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/publish_concern', {
-                'user_id': userId,
+                'user_id': user,
                 'booking_reference': bookingReference,
                 'message': concern
             });
@@ -28,7 +28,7 @@ export const UserDashboard = () => {
     const handleFetchResponse = async () => {
         try {
             const res = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_replied_concern', {
-                'user_id': userId
+                'user_id': user
             }, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export const UserDashboard = () => {
     const handleFollowUpSubmit = async (bookingReference, followUpConcern) => {
         try {
             await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/publish_concern', {
-                'user_id': userId,
+                'user_id': user,
                 'booking_reference': bookingReference,
                 'message': followUpConcern
             });

@@ -90,7 +90,7 @@ const Verification = () => {
         }
         // login successful
 
-        navigate('/');
+        navigate('/customer');
     }
 
     if (!attributes) return ( <div>Loading...</div> );

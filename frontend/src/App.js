@@ -14,6 +14,8 @@ import Confirmation from "./pages/authentication/Confirmation";
 import {Account} from './pages/authentication/Account'
 import Status from "./pages/authentication/Status";
 import Verification from "./pages/authentication/Verification";
+import { Customer } from "./pages/customer/Customer";
+import EditRoom from "./pages/manage-rooms/EditRoom";
 
 function App() {
   return (
@@ -31,12 +33,14 @@ function App() {
           />
           <Route path='/verification' Component={Verification}></Route>
           <Route path='/agent' Component={Agent}></Route>
+          <Route path='/customer' Component={Customer}></Route>
           <Route path='/customer/submit-query' Component={UserDashboard}></Route>
           <Route path='/agent/answer-query' Component={AgentDashboard}></Route>
-          <Route path='/booking' Component={Booking}></Route>
+          <Route path='/customer/booking' Component={Booking}></Route>
           <Route path="/bot" Component={LexChatBot}></Route>
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
+          <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
           <Route path="*" Component={Error}></Route>
 
         </Routes>
