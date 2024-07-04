@@ -8,7 +8,7 @@ const Status = () => {
     useEffect(() => {
         getSession()
             .then(session => {
-                console.log('batman session:', session);
+                console.log('session:', session);
                 setStatus(true);
             })
             .catch(err => {

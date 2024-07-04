@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserPool from '../../UserPool';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [securityQuestion, setSecurityQuestion] = useState('');
+    const [securityAnswer, setSecurityAnswer] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
     
     const validatePassword = (password) => {
         // password must be at least 8 characters long, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
@@ -14,13 +21,22 @@ const Signup = () => {
     
     const signUp = async (event) => {
         event.preventDefault();
+        const attributeList = [
+            { Name: 'email', Value: email },
+            { Name: 'phone_number', Value: phoneNumber },
+            { Name: 'given_name', Value: firstName },
+            { Name: 'family_name', Value: lastName },
+            { Name: 'custom:securityQuestion', Value: securityQuestion },
+            { Name: 'custom:securityAnswer', Value: securityAnswer }
+        ];
         try {
-            UserPool.signUp(email, password, [], null, (err, data) => {
+            UserPool.signUp(email, password, attributeList, null, (err, data) => {
                 if (err) {
                     setError(err.message);
                     console.error(err);
                 } else {
                     console.log(data);
+                    navigate('/auth-confirm/' + encodeURIComponent(email)); // Redirect to the confirmation page with the email
                 }
             });
         } catch (error) {
@@ -54,6 +70,66 @@ const Signup = () => {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        First Name
+                    </label>
+                    <input
+                        className='shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+                        type="text"
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Last Name
+                    </label>
+                    <input
+                        className='shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+                        type="text"
+                        placeholder="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Phone Number
+                    </label>
+                    <input
+                        className='shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+                        type="text"
+                        placeholder="+10000000000"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Security Question
+                    </label>
+                    <input
+                        className='shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+                        type="text"
+                        placeholder="Security Question"
+                        value={securityQuestion}
+                        onChange={(e) => setSecurityQuestion(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Answer
+                    </label>
+                    <input
+                        className='shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+                        type="text"
+                        placeholder="Answer"
+                        value={securityAnswer}
+                        onChange={(e) => setSecurityAnswer(e.target.value)}
                     />
                 </div>
 

@@ -10,10 +10,10 @@ import { AddRoom } from "./pages/manage-rooms/AddRoom";
 import LexChatBot from './pages/lex-bots/LexChatBot'
 import Signup from "./pages/authentication/Signup";
 import Login from "./pages/authentication/Login";
+import Confirmation from "./pages/authentication/Confirmation";
 import {Account} from './pages/authentication/Account'
 import Status from "./pages/authentication/Status";
-import RoomList from "./pages/list-rooms/ListRooms";
-import EditRoom from "./pages/manage-rooms/EditRoom";
+import Verification from "./pages/authentication/Verification";
 
 function App() {
   return (
@@ -25,15 +25,18 @@ function App() {
           <Route path='/' exact Component={Home}></Route>
           <Route path='/sign-up' exact Component={Signup}></Route>
           <Route path='/login' exact Component={Login}></Route>
+          <Route
+            path='/auth-confirm/:email'
+            element={<Confirmation />}
+          />
+          <Route path='/verification' Component={Verification}></Route>
           <Route path='/agent' Component={Agent}></Route>
           <Route path='/message-passing/user-dashboard' Component={UserDashboard}></Route>
           <Route path='/message-passing/agent-dashboard' Component={AgentDashboard}></Route>
           <Route path='/booking' Component={Booking}></Route>
           <Route path="/bot" Component={LexChatBot}></Route>
-          <Route path="/list-rooms" Component={RoomList}></Route>
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
-          <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
           <Route path="*" Component={Error}></Route>
 
         </Routes>

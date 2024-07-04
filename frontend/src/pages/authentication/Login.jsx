@@ -1,21 +1,33 @@
 import { useState, useContext } from 'react';
-import UserPool from '../../UserPool';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import { AccountContext } from './Account';
 
+import UserPool from '../../UserPool';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const { authenticate } = useContext(AccountContext);
     
     const login = async (event) => {
         event.preventDefault();
         authenticate(email, password)
-            .then(data => { console.log('Logged in!', data); })
-            .catch(err => { setError(err.message); console.error('Error logging in:', err); });
+            .then(data => { 
+                console.log('Logged in!', data); 
+                navigate('/verification');
+            })
+            .catch(err => { 
+                if (err.code === 'UserNotConfirmedException') {
+                    // redirect to confirm page
+                    navigate('/auth-confirm/' + encodeURIComponent(email)); // Redirect to the confirmation page with the email
+                } else {
+                    setError(err.message);
+                }
+            });
     };
 
     return (
