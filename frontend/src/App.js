@@ -15,6 +15,7 @@ import {Account} from './pages/authentication/Account'
 import Status from "./pages/authentication/Status";
 import Verification from "./pages/authentication/Verification";
 import { Customer } from "./pages/customer/Customer";
+import EditRoom from "./pages/manage-rooms/EditRoom";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/bot" Component={LexChatBot}></Route>
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
+          <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
           <Route path="*" Component={Error}></Route>
 
         </Routes>
