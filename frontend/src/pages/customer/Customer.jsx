@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+export const Customer = () => {
     const navigate = useNavigate();
-    const redirectToLogin = () => {
-        navigate('/login');
+    const redirectToQueryDashboard = () => {
+        navigate('/customer/submit-query');
     };
 
-    const redirectToSignup = () => {
-        navigate('/sign-up');
+    const redirectToRoomBooking = () => {
+        navigate('/customer/booking');
     };
 
     return (
@@ -16,15 +16,15 @@ export const Home = () => {
             <div className="mb-4">
                 <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
-                    onClick={redirectToLogin}
+                    onClick={redirectToQueryDashboard}
                 >
-                    Login
+                    Submit Concern
                 </button>
                 <button
                     className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    onClick={redirectToSignup}
+                    onClick={redirectToRoomBooking}
                 >
-                    Signup
+                    Book Rooms
                 </button>
             </div>
         </div>

@@ -69,6 +69,7 @@ const Verification = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(captcha, captchaInput);
         if (securityAnswer !== attributes.securityAnswer) {
             setError('Incorrect answer');
             console.log('Incorrect answer');
@@ -90,7 +91,7 @@ const Verification = () => {
         }
         // login successful
 
-        navigate('/');
+        navigate('/customer');
     }
 
     if (!attributes) return ( <div>Loading...</div> );

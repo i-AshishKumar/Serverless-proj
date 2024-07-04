@@ -40,6 +40,7 @@ const Account = ({children}) => {
                 onSuccess: (data) => {
                     console.log('onSuccess:', data);
                     resolve(data);
+                    localStorage.setItem("email", email);
                 },
                 onFailure: (err) => {
                     console.error('onFailure:', err);
