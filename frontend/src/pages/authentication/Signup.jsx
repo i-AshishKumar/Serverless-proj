@@ -10,6 +10,7 @@ const Signup = () => {
     const [securityQuestion, setSecurityQuestion] = useState('');
     const [securityAnswer, setSecurityAnswer] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('agent');
     const [error, setError] = useState('');
     const navigate = useNavigate();
     
@@ -26,6 +27,7 @@ const Signup = () => {
             { Name: 'phone_number', Value: phoneNumber },
             { Name: 'given_name', Value: firstName },
             { Name: 'family_name', Value: lastName },
+            { Name: 'custom:role', Value: role },
             { Name: 'custom:securityQuestion', Value: securityQuestion },
             { Name: 'custom:securityAnswer', Value: securityAnswer }
         ];
@@ -108,6 +110,23 @@ const Signup = () => {
                         onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                 </div>
+
+
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Role
+                    </label>
+
+                    <select 
+                        className='shadow appearance-none border border-grey-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+                        defaultValue={'agent'} 
+                        onChange={e => setRole(e.target.value)}
+                    >
+                        <option value="agent">Agent</option>
+                        <option value="customer">Customer</option>
+                    </select>
+                </div>
+
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Security Question
@@ -120,6 +139,7 @@ const Signup = () => {
                         onChange={(e) => setSecurityQuestion(e.target.value)}
                     />
                 </div>
+
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Answer
