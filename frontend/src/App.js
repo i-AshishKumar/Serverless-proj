@@ -16,10 +16,14 @@ import Status from "./pages/authentication/Status";
 import Verification from "./pages/authentication/Verification";
 import { Customer } from "./pages/customer/Customer";
 import EditRoom from "./pages/manage-rooms/EditRoom";
+import BotRenderer from "./pages/chat-bot/Chat";
+
 
 function App() {
   return (
     <div className="App">
+      <BotRenderer/>
+
       <Account>
       <Status />
       <Router>
@@ -37,12 +41,11 @@ function App() {
           <Route path='/customer/submit-query' Component={UserDashboard}></Route>
           <Route path='/agent/answer-query' Component={AgentDashboard}></Route>
           <Route path='/customer/booking' Component={Booking}></Route>
-          <Route path="/bot" Component={LexChatBot}></Route>
+          {/* <Route path="/bot" Component={LexChatBot}></Route> */} //Removed because of Amazon Lex Access issue. Used Dialogflow instead
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
           <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
           <Route path="*" Component={Error}></Route>
-
         </Routes>
       </Router>
       </Account>

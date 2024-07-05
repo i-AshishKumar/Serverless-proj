@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext} from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from '../../UserPool';
 import UserPool from '../../UserPool';
@@ -63,36 +63,41 @@ const Account = ({children}) => {
 }
 
 const getUserAttribute = (attribute) => {
-    const currentUser = UserPool.getCurrentUser();
-   
-   
-    if (currentUser) {
-      currentUser.getSession((err, session) => {
-        if (err) {
-          console.error('Error getting session:', err);
-          return;
-        }
-   
-        currentUser.getUserAttributes((err, attributes) => {
+    return new Promise((resolve, reject) => {
+      const currentUser = UserPool.getCurrentUser();
+  
+      if (currentUser) {
+        currentUser.getSession((err, session) => {
           if (err) {
-            console.error('Error getting user attributes:', err);
+            console.error('Error getting session:', err);
+            reject(err);
             return;
           }
-   
-          // Get specific attribute, e.g., email
-          const attributeObject = attributes.find(attr => attr.getName() === attribute);
-          const attributeValue = attributeObject ? attributeObject.getValue() : null;
-   
-          console.log(`${attribute}:`, attributeValue);
-   
-          // Use the email or other attributes as needed 
-                               return attributeValue;
+  
+          currentUser.getUserAttributes((err, attributes) => {
+            if (err) {
+              console.error('Error getting user attributes:', err);
+              reject(err);
+              return;
+            }
+  
+            // Get specific attribute, e.g., email
+            const attributeObject = attributes.find(attr => attr.getName() === attribute);
+            const attributeValue = attributeObject ? attributeObject.getValue() : null;
+  
+            console.log(`${attribute}:`, attributeValue);
+            resolve(attributeValue);
+          });
         });
-      });
-    } else {
-      console.error('No current user');
-      // navigate('/login')
-    }
-  }
+      } else {
+        console.error('No current user');
+        resolve(null); // Resolve with null if no current user
+      }
+    });
+  };
+  
+  
+    
+  
 
 export { Account, AccountContext, getUserAttribute };
