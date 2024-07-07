@@ -17,6 +17,7 @@ import Verification from "./pages/authentication/Verification";
 import { Customer } from "./pages/customer/Customer";
 import EditRoom from "./pages/manage-rooms/EditRoom";
 import BotRenderer from "./pages/chat-bot/Chat";
+import BookingForm from "./pages/booking/BookingForm";
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
           <Route path='/customer' Component={Customer}></Route>
           <Route path='/customer/submit-query' Component={UserDashboard}></Route>
           <Route path='/agent/answer-query' Component={AgentDashboard}></Route>
-          <Route path='/customer/booking' Component={Booking}></Route>
+          <Route path='/customer/booking' Component={BookingForm}></Route>
           {/* <Route path="/bot" Component={LexChatBot}></Route> */} //Removed because of Amazon Lex Access issue. Used Dialogflow instead
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
