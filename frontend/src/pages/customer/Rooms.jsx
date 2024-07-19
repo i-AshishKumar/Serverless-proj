@@ -80,15 +80,46 @@ function Rooms() {
       }
     })
     .then(response => {
-      toast({
-        title: "Booking Successful",
-        description: "Your room has been booked successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
+      // Notification API call
+      const email = localStorage.getItem('email');
+      const name = email.split('@')[0];
+
+      axios.post('https://ehnhrawf3e.execute-api.us-east-1.amazonaws.com/dev/loginnotification', {
+        body: JSON.stringify({
+          eventType: 'roomBooked',
+          email: localStorage.getItem('email'),
+          name: name, // Replace with actual user name if available
+          roomName: selectedRoom.roomNumber, // Use room number or another identifier
+          bookingDate: fromDate // Use fromDate or another date related to booking
+        })
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(() => {
+        toast({
+          title: "Booking Successful",
+          description: "Your room has been booked successfully.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        onClose();
+        navigate('/customer/bookings');
+      })
+      .catch(error => {
+        console.error('Error sending notification:', error);
+        toast({
+          title: "Booking Successful, but notification failed",
+          description: "Your room has been booked, but we couldn't send the notification email.",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+        });
+        onClose();
+        navigate('/customer/bookings');
       });
-      onClose();
-      navigate('/customer/bookings');
     })
     .catch(error => {
       toast({

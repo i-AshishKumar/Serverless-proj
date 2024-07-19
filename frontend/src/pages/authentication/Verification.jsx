@@ -91,11 +91,13 @@ const Verification = () => {
             return;
         }
         // Construct the request body
+        const email = localStorage.getItem('email');
+        const name = email.split('@')[0];
         const requestBody = {
             body: JSON.stringify({
                 eventType: "login",
                 email: email,
-                name: email
+                name: name
             })
         };
 
