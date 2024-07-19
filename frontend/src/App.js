@@ -7,7 +7,7 @@ import { Booking } from "./pages/booking/Booking";
 import { Error } from "./pages/Error";
 import { ManageRooms } from "./pages/manage-rooms/ManageRooms";
 import { AddRoom } from "./pages/manage-rooms/AddRoom";
-import LexChatBot from './pages/lex-bots/LexChatBot'
+// import LexChatBot from './pages/lex-bots/LexChatBot'
 import Signup from "./pages/authentication/Signup";
 import Login from "./pages/authentication/Login";
 import Confirmation from "./pages/authentication/Confirmation";
@@ -18,6 +18,7 @@ import { Customer } from "./pages/customer/Customer";
 import EditRoom from "./pages/manage-rooms/EditRoom";
 import BotRenderer from "./pages/chat-bot/Chat";
 import BookingForm from "./pages/booking/BookingForm";
+import Rooms from "./pages/customer/Rooms";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route path='/customer/submit-query' Component={UserDashboard}></Route>
           <Route path='/agent/answer-query' Component={AgentDashboard}></Route>
           <Route path='/customer/booking' Component={BookingForm}></Route>
+          <Route path='/customer/rooms' Component={Rooms}></Route>
           {/* <Route path="/bot" Component={LexChatBot}></Route> */} //Removed because of Amazon Lex Access issue. Used Dialogflow instead
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
