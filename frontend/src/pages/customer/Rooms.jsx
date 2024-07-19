@@ -24,17 +24,19 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 function Rooms() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRoomId, setSelectedRoomId] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null); // Use an object to store selected room details
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState('');
   const [comments, setComments] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('https://w18ghvf5ge.execute-api.us-east-1.amazonaws.com/test/get-rooms')
@@ -48,8 +50,8 @@ function Rooms() {
       });
   }, []);
 
-  const handleBookNow = (roomId) => {
-    setSelectedRoomId(roomId);
+  const handleBookNow = (room) => {
+    setSelectedRoom(room); // Set the entire room object
     setFromDate('');
     setToDate('');
     setNumberOfPeople('');
@@ -58,17 +60,21 @@ function Rooms() {
   };
 
   const handleSubmit = () => {
+    if (!selectedRoom) return;
+
     const bookingDetails = {
-        body:JSON.stringify({
-            room_id: selectedRoomId,
+        body: JSON.stringify({
+            email: localStorage.getItem('email'),
+            room_id: selectedRoom.id,
+            room_number: selectedRoom.roomNumber, // Include room number
             from_date: fromDate,
             to_date: toDate,
             number_of_people: numberOfPeople,
             comments: comments,
         })
-    }
+    };
 
-    axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/book', JSON.stringify(bookingDetails), {
+    axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/book', bookingDetails, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -82,6 +88,7 @@ function Rooms() {
         isClosable: true,
       });
       onClose();
+      navigate('/customer/bookings');
     })
     .catch(error => {
       toast({
@@ -132,7 +139,7 @@ function Rooms() {
                   colorScheme="teal" 
                   variant="solid" 
                   size="md" 
-                  onClick={() => handleBookNow(room.id)}
+                  onClick={() => handleBookNow(room)}
                 >
                   Book Now
                 </Button>
@@ -150,7 +157,7 @@ function Rooms() {
           <ModalBody>
             <FormControl isReadOnly>
               <FormLabel>Room ID</FormLabel>
-              <Input value={selectedRoomId || ''} />
+              <Input value={selectedRoom?.id || ''} />
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>From Date</FormLabel>
