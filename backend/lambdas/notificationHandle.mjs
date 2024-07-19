@@ -6,6 +6,7 @@ const sqs = new AWS.SQS();
 export const handler = async (event) => {
     for (const record of event.Records) {
         const message = JSON.parse(record.body);
+        console.log("message body  ", message);
         const { eventType, userEmail, userName, roomName, bookingDate, failureReason } = message;
 
         switch (eventType) {
@@ -58,27 +59,27 @@ const sendMail = async (sendTo, subject, msg) => {
 }
 const sendLoginEmail = async (userEmail, userName) => {
 
-    const text= "Hello ${userName},\n\nYou have successfully logged in."
+    const text= `Hello ${userName},\n\nYou have successfully logged in.`
     await sendMail(userEmail, 'Login Successful', text);
 
 };
 
 const sendRegisterEmail = async (userEmail, userName) => {
 
-    const text= "Hello ${userName},\n\nThank you for registering with us."
+    const text= `Hello ${userName},\n\nThank you for registering with us.`
     await sendMail(userEmail, 'Registration Successful', text);
 };
 
 const sendRoomBookedEmail = async (userEmail, userName, roomName, bookingDate) => {
 
-    const text= "Hello ${userName},\n\nYour booking for ${roomName} on ${bookingDate} is confirmed."
+    const text= `Hello ${userName},\n\nYour booking for ${roomName} on ${bookingDate} is confirmed.`
     await sendMail(userEmail, 'Room Booking Confirmation', text);
 
 };
 
 const sendRoomBookingFailedEmail = async (userEmail, userName, roomName, failureReason) => {
 
-    const text= "Hello ${userName},\n\nYour booking for ${roomName} has failed due to: ${failureReason}"
+    const text= `Hello ${userName},\n\nYour booking for ${roomName} has failed due to: ${failureReason}`
     await sendMail(userEmail, 'Room Booking Failed', text);
 
 };
