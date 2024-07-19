@@ -34,11 +34,8 @@ function App() {
           <Route path='/' exact Component={Home}></Route>
           <Route path='/sign-up' exact Component={Signup}></Route>
           <Route path='/login' exact Component={Login}></Route>
-          <Route
-            path='/auth-confirm/:email'
-            element={<Confirmation />}
-          />
-          <Route path='/verification' Component={Verification}></Route>
+          <Route path='/auth-confirm/:email/:firstName' element={<Confirmation />}></Route>
+          <Route path='/verification/:email' Component={Verification}></Route>
           <Route path='/agent' Component={Agent}></Route>
           <Route path='/customer' Component={Customer}></Route>
           <Route path='/customer/submit-query' Component={UserDashboard}></Route>

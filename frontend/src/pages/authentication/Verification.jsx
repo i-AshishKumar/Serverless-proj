@@ -1,7 +1,7 @@
 import { AccountContext } from "./Account";
 import UserPool from "../../UserPool";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const Verification = () => {
@@ -12,6 +12,8 @@ const Verification = () => {
     const [captcha, setCaptcha] = useState();
     const [captchaInput, setCaptchaInput] = useState();
     const navigate = useNavigate();
+
+    const {email} = useParams();
 
     const words = ['apple', 'banana'];
 
@@ -88,9 +90,38 @@ const Verification = () => {
             setError('Incorrect captcha');
             return;
         }
-        // login successful
+        // Construct the request body
+        const requestBody = {
+            body: JSON.stringify({
+                eventType: "login",
+                email: email,
+                name: email
+            })
+        };
 
-        navigate('/customer');
+        // Send the POST request to the API gateway
+        fetch('https://ehnhrawf3e.execute-api.us-east-1.amazonaws.com/dev/loginnotification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+            // Navigate to customer page after successful request
+            navigate('/customer');
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            setError('Failed to notify login event');
+        });
     }
 
     if (!attributes) return ( <div>Loading...</div> );

@@ -38,7 +38,7 @@ const Signup = () => {
                     console.error(err);
                 } else {
                     console.log(data);
-                    navigate('/auth-confirm/' + encodeURIComponent(email)); // Redirect to the confirmation page with the email
+                    navigate(`/auth-confirm/${encodeURIComponent(email)}/${encodeURIComponent(firstName)}`); // Redirect to the confirmation page with the email and first name
                 }
             });
         } catch (error) {

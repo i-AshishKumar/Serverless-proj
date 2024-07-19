@@ -18,7 +18,7 @@ const Login = () => {
         authenticate(email, password)
             .then(data => { 
                 console.log('Logged in!', data); 
-                navigate('/verification');
+                navigate('/verification/'+encodeURIComponent(email));
             })
             .catch(err => { 
                 if (err.code === 'UserNotConfirmedException') {
