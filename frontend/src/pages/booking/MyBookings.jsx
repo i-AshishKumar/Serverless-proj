@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Thead, Tbody, Tr, Th, Td, Container, Heading, Box, useToast } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Container, Heading, Box, useToast, Text } from '@chakra-ui/react';
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
@@ -44,7 +44,8 @@ function MyBookings() {
 
   return (
     <Container maxW="container.xl" p={4}>
-      <Heading mb={4}>My Bookings</Heading>
+      <Heading mb={2}>My Bookings</Heading>
+      <Text fontSize="lg" mb={4}>This is your booking history </Text>
       <Box overflowX="auto">
         <Table variant="simple">
           <Thead>
@@ -70,7 +71,6 @@ function MyBookings() {
                 <Td>{booking.number_of_people}</Td>
                 <Td>{booking.from_date}</Td>
                 <Td>{booking.to_date}</Td>
-
               </Tr>
             ))}
           </Tbody>
