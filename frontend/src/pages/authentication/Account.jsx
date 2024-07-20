@@ -87,7 +87,7 @@ const getUserAttribute = (attribute) => {
   
             console.log(`${attribute}:`, attributeValue);
             resolve(attributeValue);
-          });
+          });   
         });
       } else {
         console.error('No current user');

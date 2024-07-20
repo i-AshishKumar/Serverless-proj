@@ -2,7 +2,7 @@ import { AccountContext } from "./Account";
 import UserPool from "../../UserPool";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { getUserAttribute } from "../authentication/Account";
 
 const Verification = () => {
     const [attributes, setAttributes] = useState();
@@ -115,10 +115,12 @@ const Verification = () => {
             }
             return response.json();
         })
-        .then(data => {
+        .then(async data => {
             console.log('Success:', data);
+            const role = await getUserAttribute("custom:role");
+            localStorage.setItem("role", role);
             // Navigate to customer page after successful request
-            navigate('/customer');
+            navigate(role ? `/${role}` : '/');
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
