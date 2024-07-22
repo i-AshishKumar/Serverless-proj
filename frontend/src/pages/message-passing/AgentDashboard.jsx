@@ -1,12 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+// Utility function to format date and time
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString(); // This will give the local date and time
+};
+
 export const AgentDashboard = () => {
+    const user = localStorage.getItem("email");
     const [concerns, setConcerns] = useState([]);
 
     const fetchConcerns = async () => {
         try {
-            const response = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_published_concern');
+            const response = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_published_concern', {
+                'agent_id': user
+            });
             setConcerns(response.data.concerns);
         } catch (error) {
             console.error('Error fetching concerns:', error);
@@ -15,6 +24,9 @@ export const AgentDashboard = () => {
 
     useEffect(() => {
         fetchConcerns();
+        // const interval = setInterval(fetchConcerns, 30000); // Fetch concerns every 30 seconds
+
+        // return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
 
     const handleRespond = async (bookingReference, reply) => {
@@ -49,18 +61,24 @@ export const AgentDashboard = () => {
                         <div key={concern.id} className="bg-white shadow-md rounded-lg p-6">
                             <p className="font-semibold text-lg mb-2">Booking Ref: <span className="font-normal">{concern.booking_reference}</span></p>
                             <p className="mb-4"><span className="font-semibold">Concern:</span> {concern.message}</p>
-                            <textarea
-                                className="w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Your response"
-                                rows="3"
-                                onChange={(e) => concern.reply = e.target.value}
-                            />
-                            <button 
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                                onClick={() => handleRespond(concern.id, concern.reply)}
-                            >
-                                Respond
-                            </button>
+                            <p className="mb-4"><span className="font-semibold">Response:</span> {concern.reply}</p>
+                            {concern.status === "pending" && (
+                                <>
+                                    <textarea
+                                        className="w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Your response"
+                                        rows="3"
+                                        onChange={(e) => concern.reply = e.target.value}
+                                    />
+                                    <button 
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                                        onClick={() => handleRespond(concern.id, concern.reply)}
+                                    >
+                                        Respond
+                                    </button>
+                                </>
+                            )}
+                            <p className="text-sm text-gray-500 mt-2">{formatDate(concern.created_at)}</p>
                         </div>
                     ))}
                 </div>

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+// Utility function to format date and time
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString(); // This will give the local date and time
+};
+
 export const UserDashboard = () => {
     const user = localStorage.getItem("email");
     const [bookingReference, setBookingReference] = useState('');
@@ -34,6 +40,7 @@ export const UserDashboard = () => {
                     'Content-Type': 'application/json'
                 }
             });
+
             setResponses(res.data);
         } catch (error) {
             console.error('Error fetching response:', error);
@@ -62,6 +69,9 @@ export const UserDashboard = () => {
 
     useEffect(() => {
         handleFetchResponse();
+        // const interval = setInterval(handleFetchResponse, 30000); // Fetch concerns every 30 seconds
+
+        // return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
 
     return (
@@ -113,6 +123,7 @@ export const UserDashboard = () => {
                                         <p className="font-semibold">Status: <span className="font-normal">{concern.status.charAt(0).toUpperCase() + concern.status.slice(1)}</span></p>
                                         <p className="font-semibold">Concern: <span className="font-normal">{concern.message}</span></p>
                                         <p className="font-semibold">Agent Response: <span className="font-normal">{concern.reply}</span></p>
+                                        <p className="text-sm text-gray-500 mt-2">{formatDate(concern.created_at)}</p>
                                         <form onSubmit={(e) => { e.preventDefault(); handleFollowUpSubmit(concern.booking_reference, followUpConcerns[concern.booking_reference] || ''); }} className="mt-4">
                                             <textarea
                                                 value={followUpConcerns[concern.booking_reference] || ''}

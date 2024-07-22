@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AccountContext, getUserAttribute } from './Account';
+import { useNavigate } from "react-router-dom";
 
 const Status = () => {
     const [status, setStatus] = useState(false);
@@ -7,11 +8,13 @@ const Status = () => {
     const [role, setRole] = useState("guest-user");
 
     useEffect(() => {
+        console.log(status);
         getSession()
             .then(async session => {
                 console.log('session:', session);
                 setStatus(true);
                 const role = await getUserAttribute("custom:role");
+                console.log(role);
                 setRole(role);
             })
             .catch(err => {

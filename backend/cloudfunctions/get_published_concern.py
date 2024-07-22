@@ -18,7 +18,14 @@ def get_published_concern(request):
         'Access-Control-Allow-Origin': '*'
     }
 
-    concerns_query = db.collection('concerns').where('status', '==', 'pending')
+    request_json = request.get_json(silent=True)
+
+    if not request_json or 'agent_id' not in request_json:
+        return (jsonify({'success': False, 'error': 'Agent ID is required'}), 400, headers)
+
+    agent_id = request_json['agent_id']
+
+    concerns_query = db.collection('concerns').where('agent_id', '==', agent_id)
     concerns_docs = concerns_query.stream()
 
     concerns = []
