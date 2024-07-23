@@ -18,12 +18,17 @@ const Login = () => {
         authenticate(email, password)
             .then(data => { 
                 console.log('Logged in!', data); 
-                navigate('/verification/'+encodeURIComponent(email));
+                navigate('/verification/' + encodeURIComponent(email));
             })
             .catch(err => { 
                 if (err.code === 'UserNotConfirmedException') {
                     // redirect to confirm page
                     navigate('/auth-confirm/' + encodeURIComponent(email)); // Redirect to the confirmation page with the email
+                } else if (err.name === 'InvalidLambdaResponseException') {
+                    console.log(err.name);
+                    console.log(err.code)
+                    console.log(email)
+                    navigate('/verification/' + encodeURIComponent(email));
                 } else {
                     setError(err.message);
                 }

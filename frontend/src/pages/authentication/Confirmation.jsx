@@ -20,9 +20,9 @@ const Confirmation = () => {
         const cognitoUser = new CognitoUser(userData);
 
         cognitoUser.confirmRegistration(code, true, async (err, result) => {
-            if (err) {
+            if (err && err.name !== 'InvalidLambdaResponseException') {
+                console.log(err.name);
                 setError(err.message);
-                console.error(err);
             } else {
                 console.log('Confirmation result:', result);
 
