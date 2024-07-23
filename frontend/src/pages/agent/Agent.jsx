@@ -10,12 +10,18 @@ export const Agent = () => {
     const redirectToManageRooms = () => {
         navigate('/manage-rooms');
     };
+    const redirectToDataDashboard = () => {
+        navigate('/analytics');
+    };
+    const redirectToCustomerAnalysis = () => {
+        navigate('/customer-analysis');
+    };
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <div className="mb-4">
+            <div className="grid grid-cols-2 gap-4">
                 <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     onClick={redirectToAgentDashboard}
                 >
                     Answer Customer Queries
@@ -25,6 +31,18 @@ export const Agent = () => {
                     onClick={redirectToManageRooms}
                 >
                     Manage Rooms
+                </button>
+                <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={redirectToDataDashboard}
+                >
+                    Data Analysis Dashboard
+                </button>
+                <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={redirectToCustomerAnalysis}
+                >
+                    Customer Analysis Dashboard
                 </button>
             </div>
         </div>
