@@ -19,7 +19,7 @@ import BotRenderer from "./pages/chat-bot/Chat";
 import Rooms from "./pages/customer/Rooms";
 import MyBookings from "./pages/booking/MyBookings";
 import DataAnalysis from "./pages/DataAnalysis";
-
+import CustomerData from "./pages/CustomerData";
 
 function App() {
   return (
@@ -47,7 +47,7 @@ function App() {
           <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
           <Route path='/analytics' Component={DataAnalysis}></Route>
           <Route path="*" Component={Error}></Route>
-
+          <Route path="/customer-analysis" Component={CustomerData}></Route>
         </Routes>
       </Router>
       </Account>
