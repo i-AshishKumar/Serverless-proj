@@ -62,26 +62,28 @@ function Rooms() {
   };
 
   const handleShowReviews = (room) => {
+    setSelectedRoom(room.roomNumber ); // Set the selected room here
+    console.log(selectedRoom)
     axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/each-room-reviews', {
-        roomNumber: room.roomNumber // Send room number in the request body
-      })
-      .then(response => {
-        const reviewsData = JSON.parse(response.data.body); // Parse the JSON string
-        setReviews(reviewsData); // Set reviews to the parsed data
-        console.log(reviews)
-        onReviewsOpen();
-      })
-      .catch(error => {
-        console.error('Error fetching reviews:', error);
-        toast({
-          title: "Error",
-          description: "There was an error fetching reviews. Please try again later.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
+      roomNumber: room.roomNumber // Send room number in the request body
+    })
+    .then(response => {
+      const reviewsData = JSON.parse(response.data.body); // Parse the JSON string
+      setReviews(reviewsData); // Set reviews to the parsed data
+      onReviewsOpen();
+    })
+    .catch(error => {
+      console.error('Error fetching reviews:', error);
+      toast({
+        title: "Error",
+        description: "There was an error fetching reviews. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
       });
+    });
   };
+  
   
   
   const handleSubmit = () => {
@@ -250,28 +252,28 @@ function Rooms() {
       </Modal>
 
       <Modal isOpen={isReviewsOpen} onClose={onReviewsClose}>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader>Room Reviews</ModalHeader>
-    <ModalCloseButton />
-    <ModalBody>
-      {reviews.length > 0 ? (
-        reviews.map((review, index) => (
-          <Box key={index} mb={4} p={3} borderWidth="1px" borderRadius="md">
-            <Text fontWeight="bold">Reviewer: {review.email_id.split('@')[0]}</Text>
-            <Text>Rating: {review.rating}</Text>
-            <Text mt={2}>{review.review}</Text>
-          </Box>
-        ))
-      ) : (
-        <Text>No reviews available for this room.</Text>
-      )}
-    </ModalBody>
-    <ModalFooter>
-      <Button variant="ghost" onClick={onReviewsClose}>Close</Button>
-    </ModalFooter>
-  </ModalContent>
-</Modal>
+      <ModalOverlay />
+      <ModalContent>
+      <ModalHeader>Room {selectedRoom} Reviews</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          {reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <Box key={index} mb={4} p={3} borderWidth="1px" borderRadius="md">
+                <Text fontWeight="bold">Reviewer: {review.email_id.split('@')[0]}</Text>
+                <Text>Rating: {review.rating}</Text>
+                <Text mt={2}>{review.review}</Text>
+              </Box>
+            ))
+          ) : (
+            <Text>No reviews available for this room.</Text>
+          )}
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="ghost" onClick={onReviewsClose}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+      </Modal>
 
     </Box>
   );
