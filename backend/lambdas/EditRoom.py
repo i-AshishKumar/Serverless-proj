@@ -2,22 +2,26 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 
+# Initialize DynamoDB resource and specify table name
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('Rooms')
+table = dynamodb.Table('Rooms') 
 
 def lambda_handler(event, context):
     try:
         # Parse the JSON body of the request
         body = json.loads(event['body'])
         
+        # Retrieve query string parameters from the incoming request
         query_params = event.get('queryStringParameters', {})
         room_id = query_params.get('roomId') if query_params else None
         
+        # Check if room_id is provided in the query parameters
         if room_id is None:
+            # Return a 400 Bad Request response if room_id is not provided
             return {
                 'statusCode': 400,
                 'headers': {
-                    'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                    'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                     'Access-Control-Allow-Headers': 'Content-Type',
                     'Access-Control-Allow-Methods': 'OPTIONS, POST'
                 },
@@ -57,7 +61,7 @@ def lambda_handler(event, context):
         response_payload = {
             'statusCode': 200,
             'headers': {
-                'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS, POST'  # Allow only required methods
             },
@@ -71,7 +75,7 @@ def lambda_handler(event, context):
         error_response = {
             'statusCode': 500,
             'headers': {
-                'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS, POST'
             },
@@ -85,7 +89,7 @@ def lambda_handler(event, context):
         error_response = {
             'statusCode': 400,
             'headers': {
-                'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS, POST'
             },

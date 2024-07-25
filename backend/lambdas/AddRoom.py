@@ -3,18 +3,21 @@ import boto3
 import uuid
 from botocore.exceptions import ClientError
 
+# Initialize a DynamoDB resource using Boto3
 dynamodb = boto3.resource('dynamodb')
+
+# Reference the specific DynamoDB table for Rooms
 table = dynamodb.Table('Rooms')
 
 def lambda_handler(event, context):
     try:
-        # Parse the JSON body of the request
+        # Parse the JSON body of the request to extract room data
         body = json.loads(event['body'])
         
-        # Generate a random ID for the room
+        # Generate a unique ID for the new room
         room_id = str(uuid.uuid4())
         
-        # Extract the room details from the request body
+        # Extract room details from the request body
         room_number = body['roomNumber']
         price = body['price']
         rating = body['rating']
@@ -23,7 +26,7 @@ def lambda_handler(event, context):
         guests = body['guests']
         baths = body['baths']
         
-        # Create a new room item
+        # Create a new room item to be stored in the DynamoDB table
         room_item = {
             'id': room_id,
             'roomNumber': room_number,
@@ -35,16 +38,16 @@ def lambda_handler(event, context):
             'baths': baths
         }
         
-        # Put the item into the DynamoDB table
+        # Insert the new room item into the DynamoDB table
         table.put_item(Item=room_item)
         
-        # Construct a successful response with CORS headers
+        # Construct a successful HTTP response with appropriate CORS headers
         response = {
             'statusCode': 200,
             'headers': {
-                'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                 'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'OPTIONS, POST'  # Allow only required methods
+                'Access-Control-Allow-Methods': 'OPTIONS, POST'  # Allow only specified methods
             },
             'body': json.dumps({'message': 'Room added successfully!', 'roomId': room_id})
         }
@@ -52,11 +55,11 @@ def lambda_handler(event, context):
         return response
     
     except ClientError as e:
-        # Handle DynamoDB or other service errors
+        # Handle errors related to DynamoDB or other AWS services
         return {
             'statusCode': 500,
             'headers': {
-                'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS, POST'
             },
@@ -64,11 +67,11 @@ def lambda_handler(event, context):
         }
     
     except Exception as e:
-        # Handle unexpected errors
+        # Handle unexpected errors that are not related to AWS services
         return {
             'statusCode': 400,
             'headers': {
-                'Access-Control-Allow-Origin': '*',  # Adjust origin as needed
+                'Access-Control-Allow-Origin': '*',  # Allow requests from any origin
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS, POST'
             },

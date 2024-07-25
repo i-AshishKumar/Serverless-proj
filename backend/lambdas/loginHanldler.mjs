@@ -1,17 +1,22 @@
 import AWS from 'aws-sdk';
 
+// Initialize SNS client
 const sns = new AWS.SNS();
 
 export const handler = async (event) => {
+    // Parse the incoming request body
     const body = JSON.parse(event.body);
 
-    console.log("body");
-    console.log(body);
-    let eventType;
+    // Log the request body for debugging
+    console.log("Request body:", body);
+
+    // Variable to hold the message content based on event type
     let messageContent;
 
-    console.log("POSTMAN event type");
-    console.log(body.eventType);
+    // Log the event type for debugging
+    console.log("Event type:", body.eventType);
+
+    // Determine the message content based on the event type
     switch (body.eventType) {
         case 'login':
             messageContent = {
@@ -46,20 +51,24 @@ export const handler = async (event) => {
             };
             break;
         default:
+            // Return error response for unknown event types
             return {
                 statusCode: 400,
                 body: JSON.stringify({ message: 'Invalid event type.' })
             };
     }
 
+    // Parameters for SNS publish
     const params = {
-        TopicArn: process.env.SNS_TOPIC_ARN,
-        Message: JSON.stringify(messageContent)
+        TopicArn: process.env.SNS_TOPIC_ARN, // SNS topic ARN from environment variables
+        Message: JSON.stringify(messageContent) // Message content in JSON format
     };
 
+    // Log the parameters before publishing
     console.log("Publishing message to SNS:", params);
 
     try {
+        // Publish the message to SNS
         const data = await sns.publish(params).promise();
         console.log("Message published to SNS:", data);
         return {
@@ -67,6 +76,7 @@ export const handler = async (event) => {
             body: JSON.stringify({ message: 'Event published successfully.' })
         };
     } catch (err) {
+        // Log error and return failure response
         console.error("Error publishing to SNS:", err);
         return {
             statusCode: 500,
