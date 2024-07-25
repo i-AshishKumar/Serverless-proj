@@ -45,7 +45,7 @@ function App() {
           <Route path='/manage-rooms' Component={ManageRooms}></Route>
           <Route path='/manage-rooms/add' Component={AddRoom}></Route>
           <Route path='/manage-rooms/edit-room/:roomId' Component={EditRoom}></Route>
-          <Route path='/analytics' Component={DataAnalysis}></Route>
+          <Route path='/feedback-analytics' Component={DataAnalysis}></Route>
           <Route path="*" Component={Error}></Route>
           <Route path="/customer-analysis" Component={CustomerData}></Route>
         </Routes>

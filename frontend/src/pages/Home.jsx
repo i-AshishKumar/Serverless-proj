@@ -11,6 +11,10 @@ export const Home = () => {
         navigate('/sign-up');
     };
 
+    const redirectToAnalytics = () => {
+        navigate('/feedback-analytics');
+    };
+
     return (
         <div className="flex flex-col items-center justify-center h-screen">
             <div className="mb-4">
@@ -25,6 +29,12 @@ export const Home = () => {
                     onClick={redirectToSignup}
                 >
                     Signup
+                </button>
+                <button
+                    className="bg-purple-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+                    onClick={redirectToAnalytics}
+                >
+                    Review analytics
                 </button>
             </div>
         </div>
