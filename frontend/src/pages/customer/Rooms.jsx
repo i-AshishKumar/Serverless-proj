@@ -88,67 +88,90 @@ function Rooms() {
   
   const handleSubmit = () => {
     if (!selectedRoom) return;
-
+  
     const bookingDetails = {
-        body: JSON.stringify({
-            email: localStorage.getItem('email'),
-            room_id: selectedRoom.id,
-            room_number: selectedRoom.roomNumber, // Include room number
-            from_date: fromDate,
-            to_date: toDate,
-            number_of_people: numberOfPeople,
-            comments: comments,
-        })
+      body: JSON.stringify({
+        email: localStorage.getItem('email'),
+        room_id: selectedRoom.id,
+        room_number: selectedRoom.roomNumber, // Include room number
+        from_date: fromDate,
+        to_date: toDate,
+        number_of_people: numberOfPeople,
+        comments: comments,
+      })
     };
-
+  
     axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/book', bookingDetails, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
     .then(response => {
-      // Notification API call
-      const email = localStorage.getItem('email');
-      const name = email.split('@')[0];
-
-      axios.post('https://ehnhrawf3e.execute-api.us-east-1.amazonaws.com/dev/loginnotification', {
-        body: JSON.stringify({
-          eventType: 'roomBooked',
-          email: localStorage.getItem('email'),
-          name: name, // Replace with actual user name if available
-          roomName: selectedRoom.roomNumber, // Use room number or another identifier
-          bookingDate: fromDate // Use fromDate or another date related to booking
+      console.log(response)
+      if (response.data.statusCode === 200) {
+        // Handle successful booking
+        const email = localStorage.getItem('email');
+        const name = email.split('@')[0];
+  
+        axios.post('https://ehnhrawf3e.execute-api.us-east-1.amazonaws.com/dev/loginnotification', {
+          body: JSON.stringify({
+            eventType: 'roomBooked',
+            email: localStorage.getItem('email'),
+            name: name,
+            roomName: selectedRoom.roomNumber,
+            bookingDate: fromDate
+          })
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(() => {
+        .then(() => {
+          toast({
+            title: "Booking Successful",
+            description: "Your room has been booked successfully.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          onClose();
+          navigate('/customer/bookings');
+        })
+        .catch(error => {
+          console.error('Error sending notification:', error);
+          toast({
+            title: "Booking Successful, but notification failed",
+            description: "Your room has been booked, but we couldn't send the notification email.",
+            status: "warning",
+            duration: 5000,
+            isClosable: true,
+          });
+          onClose();
+          navigate('/customer/bookings');
+        });
+  
+      } else if (response.data.statusCode === 400) {
+        // Handle booking failure due to room being already booked
         toast({
-          title: "Booking Successful",
-          description: "Your room has been booked successfully.",
-          status: "success",
+          title: "Booking Failed",
+          description: "Room is already booked for the given dates.",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
-        onClose();
-        navigate('/customer/bookings');
-      })
-      .catch(error => {
-        console.error('Error sending notification:', error);
+      } else {
+        // Handle other unexpected responses
         toast({
-          title: "Booking Successful, but notification failed",
-          description: "Your room has been booked, but we couldn't send the notification email.",
-          status: "warning",
+          title: "Booking Failed",
+          description: "Unexpected response from server. Please try again.",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
-        onClose();
-        navigate('/customer/bookings');
-      });
+      }
     })
     .catch(error => {
+      // Handle network errors or unexpected exceptions
       toast({
         title: "Booking Failed",
         description: "There was an error booking the room. Please try again.",
@@ -159,6 +182,7 @@ function Rooms() {
       console.error('Error booking room:', error);
     });
   };
+  
 
   if (loading) {
     return <Spinner size="xl" />;
