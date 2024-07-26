@@ -16,6 +16,7 @@ const BookingForm = () => {
     const navigate = useNavigate();
     const toast = useToast();
 
+    // State to manage form fields and response messages
     const [roomId, setRoomId] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
@@ -23,11 +24,12 @@ const BookingForm = () => {
     const [comments, setComments] = useState('');
     const [message, setMessage] = useState('');
 
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default form submission behavior
         try {
             const response = await axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/book', {
-                body:JSON.stringify({
+                body: JSON.stringify({
                     room_id: roomId,
                     from_date: fromDate,
                     to_date: toDate,
@@ -35,12 +37,13 @@ const BookingForm = () => {
                     comments: comments,
                 })
             });
-            const result = JSON.parse(response.data.body)
-            console.log(response)
+
+            const result = JSON.parse(response.data.body);
+            console.log(response);
             setMessage(response.data.message);
 
             if (response.data.statusCode === 200) {
-                // Redirect to home and show success toast
+                // On successful booking, navigate to customer page and show success toast
                 navigate('/customer', { replace: true });
                 toast({
                     title: `Room Booked Successfully, Your Booking id is ${result.booking_id}`,
@@ -49,7 +52,7 @@ const BookingForm = () => {
                     isClosable: true,
                 });
             } else {
-                // Show toast for room already booked
+                // If room is already booked, show error toast
                 toast({
                     title: 'Room Already Booked',
                     description: 'Please choose different dates.',
@@ -60,7 +63,7 @@ const BookingForm = () => {
             }
         } catch (error) {
             console.error("Error during fetch:", error);
-            setMessage("Failed to book the room. Please try again.");
+            setMessage("Failed to book the room. Please try again."); // Set error message if request fails
         }
     };
 

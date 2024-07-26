@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const EditRoom = () => {
+  // Retrieve state passed through the location object
   const { state } = useLocation();
-  const roomId  = state.room.id;
+  const roomId  = state.room.id; // Get room ID from state
   const navigate = useNavigate();
+  
+  // Initialize room state with data from location state or default values
   const [room, setRoom] = useState(state?.room || {
     roomNumber: '',
     price: '',
@@ -16,6 +19,7 @@ const EditRoom = () => {
     baths: 0,
   });
 
+  // Handle changes in form input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRoom((prevRoom) => ({
@@ -24,10 +28,12 @@ const EditRoom = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
+      // Make a POST request to update room data
       const response = await axios.post(
         `https://w18ghvf5ge.execute-api.us-east-1.amazonaws.com/test/edit-room?roomId=${roomId}`, 
         room, 
@@ -38,12 +44,14 @@ const EditRoom = () => {
         }
       );
       
+      // Navigate to manage rooms page if update is successful
       if (response.status === 200) {
         navigate("/manage-rooms");
       } else {
         console.error('Unexpected response status:', response.status);
       }
     } catch (error) {
+      // Handle any errors during the update
       console.error('Error updating room:', error);
     }
   };

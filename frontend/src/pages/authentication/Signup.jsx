@@ -14,14 +14,18 @@ const Signup = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     
+    // Function to validate the password based on regex criteria
     const validatePassword = (password) => {
-        // password must be at least 8 characters long, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
+        // Password must be at least 8 characters long, with 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/;
         return passwordRegex.test(password);
     }
     
+    // Function to handle user signup
     const signUp = async (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Prevent the default form submission behavior
+        
+        // Prepare the list of user attributes to be sent to Cognito
         const attributeList = [
             { Name: 'email', Value: email },
             { Name: 'phone_number', Value: phoneNumber },
@@ -31,17 +35,22 @@ const Signup = () => {
             { Name: 'custom:securityQuestion', Value: securityQuestion },
             { Name: 'custom:securityAnswer', Value: securityAnswer }
         ];
+        
         try {
+            // Attempt to sign up the user using Cognito's signUp method
             UserPool.signUp(email, password, attributeList, null, (err, data) => {
                 if (err) {
+                    // Handle errors and set the error state
                     setError(err.message);
                     console.error(err);
                 } else {
+                    // On success, log the result and navigate to the confirmation page
                     console.log(data);
-                    navigate(`/auth-confirm/${encodeURIComponent(email)}/${encodeURIComponent(firstName)}`); // Redirect to the confirmation page with the email and first name
+                    navigate(`/auth-confirm/${encodeURIComponent(email)}/${encodeURIComponent(firstName)}`);
                 }
             });
         } catch (error) {
+            // Handle any exceptions that occur during the sign-up process
             console.log('error signing up:', error);
         }
     };
@@ -49,7 +58,7 @@ const Signup = () => {
     return (
         <div className='w-full max-w-xs'>
             <form onSubmit={signUp} className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
-            <p className="text-red-500 mb-4 text-xs italic">{error}</p>
+                <p className="text-red-500 mb-4 text-xs italic">{error}</p>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Email
@@ -111,12 +120,10 @@ const Signup = () => {
                     />
                 </div>
 
-
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Role
                     </label>
-
                     <select 
                         className='shadow appearance-none border border-grey-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
                         defaultValue={'agent'} 

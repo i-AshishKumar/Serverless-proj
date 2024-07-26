@@ -3,18 +3,23 @@ import { useNavigate } from "react-router-dom";
 
 export const Customer = () => {
     const navigate = useNavigate();
+
+    // Function to redirect user to the Submit Query Dashboard page
     const redirectToQueryDashboard = () => {
         navigate('/customer/submit-query');
     };
 
+    // Function to redirect user to the Room Booking page
     const redirectToRoomBooking = () => {
         navigate('/customer/rooms');
     };
 
+    // Function to redirect user to the Customer Bookings page
     const redirectToCustomerBookings = () => {
         navigate('/customer/bookings');
     };
 
+    // Function to redirect user to the Feedback Analytics page
     const redirectToAnalytics = () => {
         navigate('/feedback-analytics');
     };
