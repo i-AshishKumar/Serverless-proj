@@ -69,9 +69,9 @@ export const UserDashboard = () => {
 
     useEffect(() => {
         handleFetchResponse();
-        // const interval = setInterval(handleFetchResponse, 30000); // Fetch concerns every 30 seconds
+        const interval = setInterval(handleFetchResponse, 10000); // Fetch concerns every 10 seconds
 
-        // return () => clearInterval(interval); // Cleanup interval on component unmount
+        return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
 
     return (
@@ -108,11 +108,11 @@ export const UserDashboard = () => {
 
                 <div>
                     <h2 className="text-2xl font-bold mb-4">Response from Agent</h2>
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                         <button onClick={handleFetchResponse} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
                             Refresh Responses
                         </button>
-                    </div>
+                    </div> */}
 
                     {responses ? (
                         responses.concerns.length > 0 ? (

@@ -24,9 +24,9 @@ export const AgentDashboard = () => {
 
     useEffect(() => {
         fetchConcerns();
-        // const interval = setInterval(fetchConcerns, 30000); // Fetch concerns every 30 seconds
+        const interval = setInterval(fetchConcerns, 10000); // Fetch concerns every 10 seconds
 
-        // return () => clearInterval(interval); // Cleanup interval on component unmount
+        return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
 
     const handleRespond = async (bookingReference, reply) => {
@@ -46,15 +46,15 @@ export const AgentDashboard = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-6 text-center">Customer Query Dashboard</h2>
-            <div className="mb-4 text-center">
+            <h2 className="text-2xl font-bold mb-6 text-center">Customer Queries</h2>
+            {/* <div className="mb-4 text-center">
                 <button 
                     onClick={fetchConcerns} 
                     className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                 >
                     Refresh Queries
                 </button>
-            </div>
+            </div> */}
             {concerns.length > 0 ? (
                 <div className="space-y-6">
                     {concerns.map((concern) => (
