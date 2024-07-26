@@ -37,8 +37,8 @@ function App() {
           <Route path='/verification/:email' Component={Verification}></Route>
           <Route path='/agent' Component={Agent}></Route>
           <Route path='/customer' Component={Customer}></Route>
-          <Route path='/customer/submit-query' Component={UserDashboard}></Route>
-          <Route path='/agent/answer-query' Component={AgentDashboard}></Route>
+          <Route path='/customer/submit-query' exact Component={UserDashboard}></Route>
+          <Route path='/agent/answer-query' exact Component={AgentDashboard}></Route>
           <Route path='/customer/bookings' Component={MyBookings}></Route>
           <Route path='/customer/rooms' Component={Rooms}></Route>
           {/* <Route path="/bot" Component={LexChatBot}></Route> */} //Removed because of Amazon Lex Access issue. Used Dialogflow instead

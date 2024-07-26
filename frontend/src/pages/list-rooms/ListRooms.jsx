@@ -26,6 +26,7 @@ const RoomList = () => {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
+    // Fetch room data and update state
     const getRoomList = async () => {
       setRooms([
         {

@@ -12,13 +12,12 @@ const Verification = () => {
     const [captcha, setCaptcha] = useState();
     const [captchaInput, setCaptchaInput] = useState();
     const navigate = useNavigate();
-
-    const {email} = useParams();
+    const { email } = useParams();
 
     const words = ['apple', 'banana'];
 
     useEffect(() => {
-        // pick a random word from the list and create a caesar cipher of it
+        // Generate a random word and create a caesar cipher for captcha
         const randomWord = words[Math.floor(Math.random() * words.length)];
         const randomShift = Math.floor(Math.random() * 26);
         const cipher = randomWord.split('').map(char => {
@@ -34,63 +33,62 @@ const Verification = () => {
         setCaptcha(randomWord);
         setCipher(cipher);
 
+        // Get the current user and their session
         const user = UserPool.getCurrentUser();
         if (user) {
             user.getSession((err, session) => {
                 if (err) {
                     console.error('getSession error:', err);
-                    navigate('/login');
+                    navigate('/login'); // Redirect to login if session retrieval fails
                 }
-                console.log('robin session', session);
+                console.log('session:', session);
                 
+                // Get user attributes, especially custom security question and answer
                 user.getUserAttributes((err, att) => {
                     if (err) {
                         console.error('getUserAttributes error:', err);
-                        navigate('/login');
+                        navigate('/login'); // Redirect to login if attribute retrieval fails
                     }
-                    console.log('robin attributes', att);
+                    console.log('attributes:', att);
                     
+                    // Extract security question and answer from attributes
                     let obj = att.reduce((acc, curr) => {
                         if (curr.getName() === 'custom:securityQuestion' || curr.getName() === 'custom:securityAnswer') {
-                            acc[curr.getName().split(':')[1]] =  curr.getValue();
+                            acc[curr.getName().split(':')[1]] = curr.getValue();
                         }
                         return acc;
                     }, {});
                     setAttributes(obj);
                 });
-
             });
-            console.log('joker ')
-            console.log(attributes)
         } else {
-            navigate('/login');
+            navigate('/login'); // Redirect to login if no user is found
         }
-    }, []);
-
-    
+    }, [navigate]); // Dependency array ensures useEffect runs on component mount
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        // Check if the provided security answer matches the stored answer
         if (securityAnswer !== attributes.securityAnswer) {
             setError('Incorrect answer');
             console.log('Incorrect answer');
             console.log(securityAnswer);
             console.log(attributes.securityAnswer);
 
-            // sign out user
+            // Sign out user if the answer is incorrect
             const user = UserPool.getCurrentUser();
             if (user) {
                 user.signOut();
             }
-            navigate('/login');
-
+            navigate('/login'); // Redirect to login page
             return;
         }
+        // Check if the provided captcha matches the generated captcha
         if (captchaInput !== captcha) {
             setError('Incorrect captcha');
             return;
         }
-        // Construct the request body
+        // Construct the request body for the API call
         const email = localStorage.getItem('email');
         const name = email.split('@')[0];
         const requestBody = {
@@ -117,9 +115,10 @@ const Verification = () => {
         })
         .then(async data => {
             console.log('Success:', data);
+            // Retrieve user role and store it in localStorage
             const role = await getUserAttribute("custom:role");
             localStorage.setItem("role", role);
-            // Navigate to customer page after successful request
+            // Navigate to the appropriate role-based page or home page
             navigate(role ? `/${role}` : '/');
         })
         .catch(error => {
@@ -128,13 +127,13 @@ const Verification = () => {
         });
     }
 
-    if (!attributes) return ( <div>Loading...</div> );
+    if (!attributes) return ( <div>Loading...</div> ); // Show loading message while attributes are being fetched
 
     return (
         <div>
             <h1>Verification</h1>
             <form onSubmit={handleSubmit}>
-                <p>{error}</p>
+                <p>{error}</p> {/* Display error messages */}
                 <p>Security Question: {attributes.securityQuestion}</p>
                 <input 
                     type="text" 

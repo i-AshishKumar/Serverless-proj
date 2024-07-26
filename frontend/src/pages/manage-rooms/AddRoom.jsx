@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export const AddRoom = () => {
   const navigate = useNavigate();
+  
+  // State to manage room form data
   const [room, setRoom] = useState({
     roomNumber: "",
     price: "",
@@ -14,6 +16,7 @@ export const AddRoom = () => {
     baths: 0,
   });
 
+  // Handle input changes for text fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRoom((prevRoom) => ({
@@ -22,6 +25,7 @@ export const AddRoom = () => {
     }));
   };
 
+  // Handle image file change for room images
   const handleImageChange = (e) => {
     setRoom((prevRoom) => ({
       ...prevRoom,
@@ -29,11 +33,14 @@ export const AddRoom = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Post room data to API
       const response = await axios.post('https://w18ghvf5ge.execute-api.us-east-1.amazonaws.com/test/add-room', room);
       console.log('Room added successfully:', response.data);
+      // Navigate to manage rooms page upon success
       navigate("/manage-rooms");
     } catch (error) {
       console.error('Error adding room:', error);

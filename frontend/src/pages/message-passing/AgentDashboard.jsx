@@ -8,27 +8,29 @@ const formatDate = (dateString) => {
 };
 
 export const AgentDashboard = () => {
-    const user = localStorage.getItem("email");
-    const [concerns, setConcerns] = useState([]);
+    const user = localStorage.getItem("email"); // Get the user email from localStorage
+    const [concerns, setConcerns] = useState([]); // State to hold concerns
 
+    // Function to fetch concerns from the API
     const fetchConcerns = async () => {
         try {
             const response = await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/get_published_concern', {
                 'agent_id': user
             });
-            setConcerns(response.data.concerns);
+            setConcerns(response.data.concerns); // Update state with fetched concerns
         } catch (error) {
-            console.error('Error fetching concerns:', error);
+            console.error('Error fetching concerns:', error); // Handle errors
         }
     };
 
     useEffect(() => {
-        fetchConcerns();
-        // const interval = setInterval(fetchConcerns, 30000); // Fetch concerns every 30 seconds
+        fetchConcerns(); // Fetch concerns when component mounts
+        const interval = setInterval(fetchConcerns, 10000); // Fetch concerns every 10 seconds
 
-        // return () => clearInterval(interval); // Cleanup interval on component unmount
+        return () => clearInterval(interval); // Cleanup interval on component unmount
     }, []);
 
+    // Function to handle responding to a concern
     const handleRespond = async (bookingReference, reply) => {
         try {
             await axios.post('https://us-central1-serverlessproject-427212.cloudfunctions.net/reply_concern', {
@@ -36,25 +38,25 @@ export const AgentDashboard = () => {
                 'reply': reply
             });
             alert('Response submitted successfully');
-            // Refresh concerns
-            fetchConcerns();
+            fetchConcerns(); // Refresh concerns after submitting a response
         } catch (error) {
-            console.error('Error submitting response:', error);
+            console.error('Error submitting response:', error); // Handle errors
             alert('Failed to submit response');
         }
     };
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-6 text-center">Customer Query Dashboard</h2>
-            <div className="mb-4 text-center">
+            <h2 className="text-2xl font-bold mb-6 text-center">Customer Queries</h2>
+            {/* Uncomment this section if you want a manual refresh button */}
+            {/* <div className="mb-4 text-center">
                 <button 
                     onClick={fetchConcerns} 
                     className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                 >
                     Refresh Queries
                 </button>
-            </div>
+            </div> */}
             {concerns.length > 0 ? (
                 <div className="space-y-6">
                     {concerns.map((concern) => (

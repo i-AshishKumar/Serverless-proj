@@ -9,6 +9,7 @@ export const Booking = () => {
     message: '',
   });
 
+  // Handle input changes and update form data
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData(prevData => ({
@@ -17,6 +18,7 @@ export const Booking = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
@@ -27,7 +29,7 @@ export const Booking = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Booking</h1>
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsModalOpen(true)} // Open modal on button click
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Book Now
@@ -45,7 +47,7 @@ export const Booking = () => {
                     type="text"
                     id="name"
                     value={formData.name}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange} // Update formData on input change
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
                 </div>
@@ -55,7 +57,7 @@ export const Booking = () => {
                     type="email"
                     id="email"
                     value={formData.email}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange} // Update formData on input change
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
                 </div>
@@ -65,7 +67,7 @@ export const Booking = () => {
                     type="date"
                     id="date"
                     value={formData.date}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange} // Update formData on input change
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
                 </div>
@@ -74,20 +76,20 @@ export const Booking = () => {
                   <textarea
                     id="message"
                     value={formData.message}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange} // Update formData on input change
                     rows={3}
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   ></textarea>
                 </div>
                 <div className="items-center px-4 py-3">
                   <button
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => setIsModalOpen(false)} // Close modal on button click
                     className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
                   >
                     Close
                   </button>
                   <button
-                    type="submit"
+                    type="submit" // Submit the form
                     className="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
                   >
                     Submit

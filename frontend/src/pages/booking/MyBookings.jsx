@@ -7,26 +7,29 @@ import {
 } from '@chakra-ui/react';
 
 function MyBookings() {
+  // State to manage bookings data, modal visibility, selected booking, rating, review, and toast notifications
   const [bookings, setBookings] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
-  const toast = useToast(); // To show notifications
+  const toast = useToast(); // Hook to show notifications
 
+  // Fetch bookings when component mounts
   useEffect(() => {
     const fetchBookings = async () => {
       try {
+        // POST request to fetch customer bookings
         const response = await axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/view-customer-bookings', {
           body: JSON.stringify({
-            email_id: localStorage.getItem('email')
+            email_id: localStorage.getItem('email') // Pass the email ID from localStorage
           })
         });
 
-        let result = JSON.parse(response.data.body);
-        setBookings(result); // Update the state with the bookings data
+        let result = JSON.parse(response.data.body); // Parse response data
+        setBookings(result); // Update state with the bookings data
       } catch (error) {
-        console.error('Error fetching bookings:', error); // Log any errors
+        console.error('Error fetching bookings:', error); // Log errors
         toast({
           title: "Error fetching bookings.",
           description: "There was an issue retrieving your bookings.",
@@ -37,9 +40,10 @@ function MyBookings() {
       }
     };
 
-    fetchBookings();
+    fetchBookings(); // Call fetch function
   }, [toast]);
 
+  // Handle click on a table row to show booking details in a toast
   const handleRowClick = (booking) => {
     toast({
       title: `Booking ID: ${booking.booking_id}`,
@@ -50,21 +54,25 @@ function MyBookings() {
     });
   };
 
+  // Open modal to add a review for the selected booking
   const handleAddReviewClick = (booking) => {
     setSelectedBooking(booking);
     setIsModalOpen(true);
   };
 
+  // Close the modal and reset form fields
   const handleModalClose = () => {
     setIsModalOpen(false);
     setRating('');
     setReview('');
   };
 
+  // Handle review submission
   const handleReviewSubmit = async () => {
     try {
+      // POST request to submit the review
       await axios.post('https://24fb3brx1a.execute-api.us-east-1.amazonaws.com/dev/reviews', {
-        body:JSON.stringify({
+        body: JSON.stringify({
           booking_id: selectedBooking.booking_id,
           room_number: selectedBooking.room_number,
           email_id: localStorage.getItem("email"),
@@ -80,9 +88,9 @@ function MyBookings() {
         duration: 5000,
         isClosable: true,
       });
-      handleModalClose();
+      handleModalClose(); // Close the modal on success
     } catch (error) {
-      console.error('Error submitting review:', error); // Log any errors
+      console.error('Error submitting review:', error); // Log errors
       toast({
         title: "Error submitting review.",
         description: "There was an issue submitting your review.",
@@ -115,7 +123,7 @@ function MyBookings() {
               <Tr
                 key={booking.booking_id}
                 _hover={{ bg: 'gray.100', cursor: 'pointer' }} // Hover effect
-                onClick={() => handleRowClick(booking)} // Click handler
+                onClick={() => handleRowClick(booking)} // Click handler to show details
               >
                 <Td>{booking.room_number}</Td>
                 <Td>{booking.booking_id}</Td>
@@ -138,6 +146,7 @@ function MyBookings() {
           <ModalHeader>Add a Review</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {/* Form for adding a review */}
             <FormControl>
               <FormLabel>Rating</FormLabel>
               <Select value={rating} onChange={(e) => setRating(e.target.value)}>
